@@ -51,6 +51,18 @@
     "/v1/search": {
       "post": {
         "description": "Execute a search query.",
+        "x-codeSamples": [
+          {
+            "lang": "javascript",
+            "label": "Javascript SDK",
+            "source": "import { AISearchAPIClient } from 'aisearchapi-client';\n\nconst client = new AISearchAPIClient({ \n  apiKey: 'YOUR_API_KEY' \n});\n\nconst response = await client.search({\n  prompt: 'What are some security risks I should be aware of?',\n  context: [{\n    role: 'user', \n    content: 'I am developing a web app using Node.js and Express.'\n  }],\n  response_type: 'markdown'\n});\n\nconsole.log(response);"
+          },
+          {
+            "lang": "python",
+            "label": "Python SDK",
+            "source": "import requests\n\nresponse = requests.post(\n  'https://api.aisearchapi.io/v1/search',\n  headers={'Authorization': 'Bearer YOUR_API_KEY'},\n  json={\n    'prompt': 'What are some security risks I should be aware of?',\n    'context': [{'role': 'user', 'content': 'I am developing a web app using Node.js and Express.'}]\n  }\n)\n\nprint(response.json())"
+          }
+        ],
         "requestBody": {
           "description": "Search request",
           "content": {
@@ -89,14 +101,14 @@
                   "$ref": "#/components/schemas/SearchResponse"
                 },
                 "example": {
-                  "answer": "### Node.js Security Risks and Mitigation Strategies\\n\\nHardcoding sensitive information like API keys or encryption secrets directly into code is a significant security risk.  This practice exposes the secrets to potential attackers if the code is compromised or publicly shared.\\n\\n### Avoiding Poor Authentication Patterns in Express.js Applications\\n\\nPoorly configured cookies in Express.js applications can lead to vulnerabilities.  Failing to implement the `secure` flag for cookies, which restricts transmission to HTTPS connections, and omitting the `SameSite` attribute to prevent Cross-Site Request Forgery (CSRF) attacks, are critical omissions.  Using hardcoded secrets in the application code is also a major security risk.\\n\\n### Key Security Risks and Best Practices\\n\\n*   **Hardcoded Secrets:** Storing sensitive information like API keys directly in code is a critical security vulnerability.  Move these values to environment variables.\\n*   **Insecure Cookie Configuration:**  Failing to set the `secure` flag for cookies, which restricts transmission to HTTPS connections, and omitting the `SameSite` attribute to prevent Cross-Site Request Forgery (CSRF) attacks, are critical omissions.\\n*   **Lack of Security Headers:**  Omitting essential security headers in responses can expose applications to various attacks.\\n*   **Poor Authentication Patterns:**  Using insecure authentication methods in Express.js applications can lead to unauthorized access.\\n",
+                  "answer": "### Node.js Security Risks and Mitigation Strategies\n\nWhen developing Node.js applications that handle personal data and deploy to AWS, you should be aware of several critical security risks:\n\n**Authentication and Authorization**\n- Implement secure session management\n- Use strong password policies and multi-factor authentication\n- Avoid hardcoded credentials in your code\n\n**Data Protection**\n- Encrypt sensitive data both in transit and at rest\n- Implement proper input validation and sanitization\n- Use HTTPS for all data transmission\n\n**Infrastructure Security**\n- Keep Node.js and dependencies up to date\n- Configure AWS security groups properly\n- Use AWS IAM roles with least privilege principle\n\n**Application Security**\n- Protect against common vulnerabilities like XSS, CSRF, and SQL injection\n- Implement rate limiting and request throttling\n- Use security headers like HSTS, CSP, and X-Frame-Options",
                   "response_type": "markdown",
                   "sources": [
-                    "https://www.stackhawk.com/blog/guide-to-security-in-node-js/",
-                    "https://lirantal.com/blog/poor-express-authentication-patterns-nodejs",
-                    "https://www.w3schools.com/nodejs/nodejs_security.asp"
+                    "https://owasp.org/www-project-nodejs-goat/",
+                    "https://nodejs.org/en/docs/guides/security/",
+                    "https://aws.amazon.com/security/security-learning/"
                   ],
-                  "response_time": 3738
+                  "response_time": 2847
                 }
               }
             }
@@ -212,7 +224,7 @@
             "items": {
               "$ref": "#/components/schemas/ChatMessage"
             },
-            "description": "An ordered list of message objects that define the conversation context for the LLM. Each message contains a role and content. Currently, only the \"user\" role is supported. An example is provided below."
+            "description": "An ordered list of message objects that define the conversation context for the LLM. Each message contains a role and content. Currently, only the \"user\" role is supported."
           },
           "response_type": {
             "type": "string",
@@ -237,7 +249,7 @@
             "type": "string"
           },
           "content": {
-            "description": "The contents of the developer message. The user can also include previous messages here to enhance the model’s context, which will influence the final embedding generated.",
+            "description": "The contents of the message. Previous messages can be included here to enhance the model's context, which will influence the final response generated.",
             "type": "string"
           }
         }
