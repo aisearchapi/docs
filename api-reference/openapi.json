@@ -25,10 +25,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Balance"
-                  }
+                  "$ref": "#/components/schemas/Balance"
                 }
               }
             }
@@ -39,6 +36,11 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "description": "Server Error"
+                  }
                 }
               }
             }
@@ -48,13 +50,31 @@
     },
     "/v1/search": {
       "post": {
-        "description": "Execute a search query.\n\n",
+        "description": "Execute a search query.",
         "requestBody": {
           "description": "Search request",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SearchRequest"
+              },
+              "example": {
+                "prompt": "What are some security risks I should be aware of?",
+                "context": [
+                  {
+                    "role": "user",
+                    "content": "I am developing a web app using Node.js and Express."
+                  },
+                  {
+                    "role": "user",
+                    "content": "The app stores personal data, including names and emails."
+                  },
+                  {
+                    "role": "user",
+                    "content": "We plan to deploy it on AWS."
+                  }
+                ],
+                "response_type": "markdown"
               }
             }
           },
@@ -66,17 +86,77 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchRespnse"
+                  "$ref": "#/components/schemas/SearchResponse"
+                },
+                "example": {
+                  "answer": "### Node.js Security Risks and Mitigation Strategies\\n\\nHardcoding sensitive information like API keys or encryption secrets directly into code is a significant security risk.  This practice exposes the secrets to potential attackers if the code is compromised or publicly shared.\\n\\n### Avoiding Poor Authentication Patterns in Express.js Applications\\n\\nPoorly configured cookies in Express.js applications can lead to vulnerabilities.  Failing to implement the `secure` flag for cookies, which restricts transmission to HTTPS connections, and omitting the `SameSite` attribute to prevent Cross-Site Request Forgery (CSRF) attacks, are critical omissions.  Using hardcoded secrets in the application code is also a major security risk.\\n\\n### Key Security Risks and Best Practices\\n\\n*   **Hardcoded Secrets:** Storing sensitive information like API keys directly in code is a critical security vulnerability.  Move these values to environment variables.\\n*   **Insecure Cookie Configuration:**  Failing to set the `secure` flag for cookies, which restricts transmission to HTTPS connections, and omitting the `SameSite` attribute to prevent Cross-Site Request Forgery (CSRF) attacks, are critical omissions.\\n*   **Lack of Security Headers:**  Omitting essential security headers in responses can expose applications to various attacks.\\n*   **Poor Authentication Patterns:**  Using insecure authentication methods in Express.js applications can lead to unauthorized access.\\n",
+                  "response_type": "markdown",
+                  "sources": [
+                    "https://www.stackhawk.com/blog/guide-to-security-in-node-js/",
+                    "https://lirantal.com/blog/poor-express-authentication-patterns-nodejs",
+                    "https://www.w3schools.com/nodejs/nodejs_security.asp"
+                  ],
+                  "response_time": 3738
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "description": "Invalid or expired API key"
+                  }
+                }
+              }
+            }
+          },
+          "433": {
+            "description": "Account is at / over message quota",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "description": "Account is at / over message quota"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "description": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "description": "Server Error"
+                  }
                 }
               }
             }
@@ -87,6 +167,81 @@
   },
   "components": {
     "schemas": {
+      "SearchResponse": {
+        "required": [
+          "answer",
+          "response_type",
+          "sources",
+          "response_time"
+        ],
+        "type": "object",
+        "properties": {
+          "answer": {
+            "description": "The main response generated by the API based on the provided prompt and context.",
+            "type": "string"
+          },
+          "response_type": {
+            "description": "The format of the response, as specified by the user.",
+            "type": "string"
+          },
+          "sources": {
+            "description": "The list of sources used to generate the response.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "response_time": {
+            "description": "The total time taken to generate the response, in milliseconds.",
+            "type": "number"
+          }
+        }
+      },
+      "SearchRequest": {
+        "required": [
+          "prompt"
+        ],
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "description": "The search query.",
+            "type": "string"
+          },
+          "context": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "description": "An ordered list of message objects that define the conversation context for the LLM. Each message contains a role and content. Currently, only the \"user\" role is supported. An example is provided below."
+          },
+          "response_type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "markdown"
+            ],
+            "default": "markdown",
+            "description": "The optional format parameter can be \"text\" or \"markdown\" (default). \"text\" returns plain text without formatting, useful for logs or custom-styled outputs. \"markdown\" includes rich formatting (bold, italics, lists, code, links) for apps that can render Markdown. If omitted, the API defaults to \"markdown\"."
+          }
+        }
+      },
+      "ChatMessage": {
+        "required": [
+          "role",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "description": "Currently, only messages with the role \"user\" are considered when generating the context for the LLM. No other roles are supported at this time.",
+            "type": "string"
+          },
+          "content": {
+            "description": "The contents of the developer message. The user can also include previous messages here to enhance the model’s context, which will influence the final embedding generated.",
+            "type": "string"
+          }
+        }
+      },
       "Balance": {
         "required": [
           "available_credits"
