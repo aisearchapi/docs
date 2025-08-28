@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "AI Search API",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#ff5a50",
     "light": "#07C983",
     "dark": "#15803D"
   },
@@ -69,18 +69,13 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "anchor": "API Playground",
+          "href": "https://app.aisearchapi.io/playground",
           "icon": "book-open-cover"
         },
         {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
           "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "href": "https://aisearchapi.io/blog",
           "icon": "newspaper"
         }
       ]
