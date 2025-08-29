@@ -22,7 +22,7 @@
         "x-codeSamples": [
           {
             "lang": "javascript",
-            "label": "Javascript SDK",
+            "label": "Node.js SDK",
             "source": "import { AISearchAPIClient } from 'aisearchapi-client';\n\nconst client = new AISearchAPIClient({ apiKey: 'YOUR_API_KEY' });\nconst response = await client.balance();\n\nconsole.log(response);"
           },
           {
@@ -66,7 +66,7 @@
         "x-codeSamples": [
           {
             "lang": "javascript",
-            "label": "Javascript SDK",
+            "label": "Node.js SDK",
             "source": "import { AISearchAPIClient } from 'aisearchapi-client';\n\nconst client = new AISearchAPIClient({ \n  apiKey: 'YOUR_API_KEY' \n});\n\nconst response = await client.search({\n  prompt: 'What are some security risks I should be aware of?',\n  context: [{\n    role: 'user', \n    content: 'I am developing a web app using Node.js and Express.'\n  }],\n  response_type: 'markdown'\n});\n\nconsole.log(response);"
           },
           {
