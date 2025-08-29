@@ -28,7 +28,8 @@
               "api-reference/integrations/javascript",
               "api-reference/integrations/python",
               "api-reference/integrations/langchain",
-              "api-reference/integrations/mcp"
+              "api-reference/integrations/mcp",
+              "api-reference/integrations/n8n"
             ]
           }
         ]

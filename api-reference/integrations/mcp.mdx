@@ -1,23 +1,162 @@
 ---
-title: 'MCP Web search'
-description: 'This API documentation covers the REST endpoints for integrating with the AISearchAPI platform. These HTTP-based APIs work in any environment capable of making HTTP requests. For language-specific libraries and SDKs, check the libraries page.'
+title: MCP
 icon: "server"
 ---
 
-## Base URL
-```
-https://api.aisearch.io
+This is a **Model Context Protocol (MCP)** server that integrates the **AI Search API** into MCP-compatible apps.  
+It brings **semantic search**, **context awareness**, and **source citations** directly into your workflows.
+
+👉 Get started now:
+- [Sign Up](https://app.aisearchapi.io/join)
+- [Log In](https://app.aisearchapi.io/login)
+- [Dashboard](https://app.aisearchapi.io/dashboard) (manage your API key)
+
+---
+
+# Features
+
+- 🔍 **Intelligent Semantic Search** – Natural language queries with embeddings  
+- 💬 **Context Management** – Keep or clear conversation history  
+- 📝 **Flexible Responses** – Markdown or plain text output  
+- 📚 **Source Citations** – Reliable references included  
+- 📊 **Balance Monitoring** – Track credits in real time  
+- ⚡ **TypeScript Support** – Strong typing & IDE hints  
+
+---
+
+# Installation
+
+## From npm (recommended)
+```bash
+npm install -g aisearchapi-mcp
 ```
 
-## Authentication
-The AISearchAPI uses API keys to authenticate requests. You can create and manage your API keys through your organization settings. [Get your free API key](https://app.aisearchapi.io/dashboard)
+## From source
+```bash
+git clone https://github.com/aisearchapi/aisearchapi-mcp.git
+cd aisearchapi-mcp
+npm install
+npm run build
+```
+
+---
+
+# Configuration
+
+## 1. Get API Key
+Create an account and copy your key:
+- [Join](https://app.aisearchapi.io/join) | [Login](https://app.aisearchapi.io/login) | [Dashboard](https://app.aisearchapi.io/dashboard)
+
+## 2. Environment Variables
+Set up `.env` file:
+
+```env
+AISEARCHAPI_KEY=your-api-key-here
+AISEARCHAPI_BASE_URL=https://api.aisearchapi.io
+AISEARCHAPI_TIMEOUT=30000
+AISEARCHAPI_VERBOSE=false
+```
+
+---
+
+# Configure Claude for Desktop
+
+First, install **Claude Code**:
 
 ```bash
-curl https://api.aisearch.io/v1/search \
-  -H "Authorization: Bearer YOUR_API_KEY"
-  -d {"prompt": "How much is Bitcoin worth today?"}
+npm install -g @anthropic-ai/claude-code
 ```
 
-## Endpoints
-- **[POST /v1/search](/api-reference/endpoint/search)** - Execute a search query
-- **[GET /v1/balance](/api-reference/endpoint/balance)** - Get account balance
+Go through the authorization process to access Claude Code.  
+Then set up your local MCP:
+
+```bash
+claude mcp add aisearchapi "npx -y aisearchapi-mcp" --env API_KEY=<YOUR-API-KEY>
+```
+
+Check if it’s added correctly:
+
+```bash
+claude mcp list
+```
+
+You should see:
+```
+Checking MCP server health...
+aisearchapi: npx -y aisearchapi-mcp  - ✓ Connected
+```
+
+Now you’re ready to go!
+
+---
+
+# Command Line Usage
+
+List available tools:
+```bash
+node dist/index.js --list-tools
+```
+
+Check balance:
+```bash
+node dist/index.js --check-balance
+```
+
+Run the server:
+```bash
+node dist/index.js
+```
+
+---
+
+# Error Codes
+
+| Code | Meaning           | Fix                                |
+|------|------------------|-------------------------------------|
+| 401  | Unauthorized     | Invalid key → Get a new key         |
+| 429  | Too Many Requests | Slow down or add retry logic       |
+| 433  | Quota Exceeded   | Buy credits / upgrade               |
+| 500  | Server Error     | Try again later                     |
+| 503  | Service Down     | Temporary downtime                  |
+
+---
+
+# Development
+
+```bash
+git clone https://github.com/aisearchapi/aisearchapi-mcp.git
+cd aisearchapi-mcp
+npm install
+npm run build
+npm run dev
+```
+
+---
+
+# Best Practices
+
+- Clear context when switching topics  
+- Use markdown output for richer UI  
+- Monitor credits regularly  
+- Secure your API key with environment variables  
+
+---
+
+# Resources
+
+- [AI Search API Homepage](https://aisearchapi.io)  
+- [Join](https://app.aisearchapi.io/join) | [Login](https://app.aisearchapi.io/login) | [Dashboard](https://app.aisearchapi.io/dashboard)  
+- [npm Package](https://www.npmjs.com/package/aisearchapi-mcp)  
+- [Issues](https://github.com/aisearchapi/aisearchapi-mcp/issues)  
+
+---
+
+# Start Now
+
+Install the package, configure Claude Desktop, and start searching with the AI Search API MCP Server:
+
+```bash
+npm install -g aisearchapi-mcp
+```
+
+---

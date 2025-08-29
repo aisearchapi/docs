@@ -1,23 +1,213 @@
 ---
-title: 'Javascript SDK'
-description: 'This API documentation covers the REST endpoints for integrating with the AISearchAPI platform. These HTTP-based APIs work in any environment capable of making HTTP requests. For language-specific libraries and SDKs, check the libraries page.'
-icon: "js"
+title: 'JavaScript SDK'
+description: ''
+icon: 'js'
+---
+This SDK helps you use the **AI Search API** in your Node.js or TypeScript projects.  
+It gives you **semantic search** with context, flexible response formats, and strong TypeScript support.
+
+👉 To start, create a free account:
+
+- [Sign Up](https://app.aisearchapi.io/join)
+- [Log In](https://app.aisearchapi.io/login)
+- [Dashboard](https://app.aisearchapi.io/dashboard) (get and manage your API keys)
+
+## Features
+- 🔍 **Semantic AI Search** – Ask natural language questions
+- 💬 **Context Awareness** – Add chat-like history
+- 📝 **Flexible Responses** – Choose Markdown or plain text
+- ⚡ **TypeScript First** – IntelliSense & type safety
+- 📊 **Usage Tracking** – Check your credits anytime
+
 ---
 
-## Base URL
-```
-https://api.aisearch.io
-```
+# Installation
 
-## Authentication
-The AISearchAPI uses API keys to authenticate requests. You can create and manage your API keys through your organization settings. [Get your free API key](https://app.aisearchapi.io/dashboard)
+You can install the SDK with **npm** or **yarn**:
 
 ```bash
-curl https://api.aisearch.io/v1/search \
-  -H "Authorization: Bearer YOUR_API_KEY"
-  -d {"prompt": "How much is Bitcoin worth today?"}
+npm install aisearchapi-client
+# or
+yarn add aisearchapi-client
 ```
 
-## Endpoints
-- **[POST /v1/search](/api-reference/endpoint/search)** - Execute a search query
-- **[GET /v1/balance](/api-reference/endpoint/balance)** - Get account balance
+Or install from source:
+
+```bash
+git clone https://github.com/aisearchapi/aisearchapi-js.git
+cd aisearchapi-js
+npm install
+```
+
+---
+
+# Quick Start
+
+Import and create a client with your API key:
+
+```ts
+import { AISearchAPIClient } from 'aisearchapi-client';
+
+const client = new AISearchAPIClient({
+  apiKey: 'your-api-key-here' // get it from the Dashboard
+});
+
+const result = await client.search({
+  prompt: 'What is machine learning and how does it work?',
+  response_type: 'markdown'
+});
+
+console.log(result.answer);
+console.log('Sources:', result.sources);
+```
+
+---
+
+# API Reference
+
+## Client Configuration
+```ts
+const client = new AISearchAPIClient({
+  apiKey: 'your-api-key',
+  baseUrl: 'https://api.aisearchapi.io',
+  timeout: 30000 // ms
+});
+```
+
+## Search
+```ts
+const result = await client.search({
+  prompt: 'Your query',
+  context: [{ role: 'user', content: 'Previous message' }],
+  response_type: 'markdown'
+});
+```
+
+## Balance
+```ts
+const balance = await client.balance();
+console.log('Credits left:', balance.available_credits);
+```
+
+---
+
+# Usage Examples
+
+### Basic Search
+```ts
+const result = await client.search({ prompt: 'Explain quantum computing simply' });
+console.log(result.answer);
+```
+
+### Contextual Search
+```ts
+const result = await client.search({
+  prompt: 'What are the benefits?',
+  context: [
+    { role: 'user', content: 'I am researching renewable energy' },
+    { role: 'user', content: 'Specifically solar and wind' }
+  ]
+});
+```
+
+### Check Balance
+```ts
+const balance = await client.balance();
+if (balance.available_credits < 10) {
+  console.warn('Low balance!');
+}
+```
+
+### Error Handling
+```ts
+import { AISearchAPIError } from 'aisearchapi-client';
+
+try {
+  const result = await client.search({ prompt: 'Hello' });
+} catch (error) {
+  if (error instanceof AISearchAPIError) {
+    console.error(`API Error [${error.statusCode}]:`, error.message);
+  }
+}
+```
+
+---
+
+# TypeScript Support
+
+This client is written in TypeScript. You can use strong typing:
+
+```ts
+import type { SearchRequest, SearchResponse } from 'aisearchapi-client';
+
+const params: SearchRequest = {
+  prompt: 'What is TypeScript?',
+  response_type: 'markdown'
+};
+
+const response: SearchResponse = await client.search(params);
+```
+
+---
+
+# Response Formats
+
+You can choose how answers are returned:
+
+- **Markdown (default):** rich formatting, lists, code blocks  
+- **Text:** simple string
+
+```ts
+await client.search({ prompt: 'Explain REST APIs', response_type: 'markdown' });
+await client.search({ prompt: 'Explain Node.js', response_type: 'text' });
+```
+
+---
+
+# Error Codes
+
+| Code | Meaning           | Fix                                  |
+|------|------------------|---------------------------------------|
+| 401  | Unauthorized     | Invalid API key → get a new one       |
+| 429  | Too Many Requests | Rate limit hit                       |
+| 433  | Quota Exceeded   | Credits finished                      |
+| 500  | Server Error     | Try again later                       |
+| 503  | Service Down     | Maintenance                           |
+
+---
+
+# Environment Variables
+
+You can store your API key in `.env`:
+
+```env
+AI_SEARCH_API_KEY=your-key-here
+```
+
+Then use it in your code:
+
+```ts
+const client = new AISearchAPIClient({
+  apiKey: process.env.AI_SEARCH_API_KEY!
+});
+```
+
+---
+
+# Browser Support
+
+This SDK is made for **Node.js**.  
+For browser use:
+- Configure CORS
+- Keep your API keys secure
+
+---
+
+# Resources
+
+- [AI Search API Homepage](https://aisearchapi.io)
+- [Join](https://app.aisearchapi.io/join) | [Login](https://app.aisearchapi.io/login) | [Dashboard](https://app.aisearchapi.io/dashboard)
+- [npm Package](https://www.npmjs.com/package/aisearchapi-client)
+- [Issues](https://github.com/aisearchapi/aisearchapi-js/issues)
+
+---

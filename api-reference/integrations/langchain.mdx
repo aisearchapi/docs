@@ -1,23 +1,132 @@
 ---
-title: 'LangChain'
-description: 'This API documentation covers the REST endpoints for integrating with the AISearchAPI platform. These HTTP-based APIs work in any environment capable of making HTTP requests. For language-specific libraries and SDKs, check the libraries page.'
+title: LangChain
 icon: "link"
 ---
 
-## Base URL
-```
-https://api.aisearch.io
-```
+This package integrates the **AI Search API** with **LangChain**.  
+You can use semantic search, conversational models, and AI agents in your LangChain projects with just one package.
 
-## Authentication
-The AISearchAPI uses API keys to authenticate requests. You can create and manage your API keys through your organization settings. [Get your free API key](https://app.aisearchapi.io/dashboard)
+👉 To start, create an account and get your API key:
+- [Sign Up](https://app.aisearchapi.io/join)
+- [Log In](https://app.aisearchapi.io/login)
+- [Dashboard](https://app.aisearchapi.io/dashboard)
+
+---
+
+# Features
+
+- 🔑 **One Package Setup** – `pip install langchain-aisearchapi` and you’re ready  
+- 🤖 **LLM Interface** – Use AI Search API as a LangChain LLM  
+- 💬 **Chat Model** – Build conversational agents with memory  
+- 🛠️ **Tools for Agents** – Add AI Search directly into LangChain workflows  
+- 📚 **Prebuilt Chains** – Research, Q&A, fact-checking out of the box  
+
+---
+
+# Installation
+
+Install from PyPI:
 
 ```bash
-curl https://api.aisearch.io/v1/search \
-  -H "Authorization: Bearer YOUR_API_KEY"
-  -d {"prompt": "How much is Bitcoin worth today?"}
+pip install langchain-aisearchapi
 ```
 
-## Endpoints
-- **[POST /v1/search](/api-reference/endpoint/search)** - Execute a search query
-- **[GET /v1/balance](/api-reference/endpoint/balance)** - Get account balance
+That’s it — no extra setup needed.
+
+---
+
+# Quick Start
+
+## 1. Basic LLM Usage
+```python
+from langchain_aisearchapi import AISearchLLM
+
+llm = AISearchLLM(api_key="your-key")
+response = llm("Explain semantic search in simple terms")
+print(response)
+```
+
+## 2. Conversational Chat
+```python
+from langchain_aisearchapi import AISearchChat
+from langchain.schema import HumanMessage
+
+chat = AISearchChat(api_key="your-key")
+
+messages = [
+    HumanMessage(content="What is LangChain?"),
+    HumanMessage(content="Why do developers use it?")
+]
+
+response = chat(messages)
+print(response.content)
+```
+
+## 3. AI Search as a Tool in Agents
+```python
+from langchain_aisearchapi import AISearchTool, AISearchLLM
+from langchain.agents import initialize_agent, AgentType
+
+search_tool = AISearchTool(api_key="your-key")
+llm = AISearchLLM(api_key="your-key")
+
+agent = initialize_agent(
+    tools=[search_tool],
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True
+)
+
+result = agent.run("Find the latest SpaceX launch details")
+print(result)
+```
+
+## 4. Research Assistant
+```python
+from langchain_aisearchapi import create_research_chain
+
+research = create_research_chain(api_key="your-key")
+result = research.run("Breakthroughs in AI search technology 2024")
+print(result)
+```
+
+---
+
+# Components
+
+| Component              | Description               | Use Case                         |
+|------------------------|---------------------------|----------------------------------|
+| `AISearchLLM`          | AI Search API as an LLM   | Completions, text generation     |
+| `AISearchChat`         | Chat model with context   | Conversational AI, assistants    |
+| `AISearchTool`         | Search as LangChain tool  | Agents, workflows                |
+| `create_research_chain()` | Ready-made research chain | Research and reporting           |
+
+---
+
+# Troubleshooting
+
+- ❌ **No API key?** → [Sign up](https://app.aisearchapi.io/join) or log in.  
+- 🔑 **Key issues?** → Check your [dashboard](https://app.aisearchapi.io/dashboard).  
+- ⏳ **Rate limited?** → Use retry logic (e.g. with `tenacity`).  
+
+---
+
+# Resources
+
+- [AI Search API Homepage](https://aisearchapi.io)  
+- [Sign Up](https://app.aisearchapi.io/join) / [Log In](https://app.aisearchapi.io/login) / [Dashboard](https://app.aisearchapi.io/dashboard)  
+- [PyPI Package](https://pypi.org/project/langchain-aisearchapi)  
+
+---
+
+# Start Now
+
+Install the package, get your API key, and build powerful LangChain apps with the AI Search API:
+
+```bash
+pip install langchain-aisearchapi
+```
+
+👉 [Join now](https://app.aisearchapi.io/join) to claim your free API key and start building!
+
+---
