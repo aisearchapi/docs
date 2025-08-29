@@ -62,7 +62,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Get an API key",
       "href": "https://app.aisearchapi.io/dashboard"
     }
   },
