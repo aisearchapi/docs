@@ -1,0 +1,23 @@
+---
+title: 'LangChain'
+description: 'This API documentation covers the REST endpoints for integrating with the AISearchAPI platform. These HTTP-based APIs work in any environment capable of making HTTP requests. For language-specific libraries and SDKs, check the libraries page.'
+icon: "link"
+---
+
+## Base URL
+```
+https://api.aisearch.io
+```
+
+## Authentication
+The AISearchAPI uses API keys to authenticate requests. You can create and manage your API keys through your organization settings. [Get your free API key](https://app.aisearchapi.io/dashboard)
+
+```bash
+curl https://api.aisearch.io/v1/search \
+  -H "Authorization: Bearer YOUR_API_KEY"
+  -d {"prompt": "How much is Bitcoin worth today?"}
+```
+
+## Endpoints
+- **[POST /v1/search](/api-reference/endpoint/search)** - Execute a search query
+- **[GET /v1/balance](/api-reference/endpoint/balance)** - Get account balance
