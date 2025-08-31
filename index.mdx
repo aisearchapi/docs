@@ -1,23 +1,28 @@
 ---
-title: 'Authentication'
-description: 'This API documentation covers the REST endpoints for integrating with the AISearchAPI platform. These HTTP-based APIs work in any environment capable of making HTTP requests. For language-specific libraries and SDKs, check the libraries page.'
-icon: "key"
+title: 'About'
+description: 'Welcome to AI Search API!'
+icon: "book"
 ---
 
-## Base URL
-```
-https://api.aisearch.io
-```
+## What is AI Search API
+Creating an AI agent that can access and utilize real-time web information presents significant technical challenges.
+Traditional web scraping approaches lack scalability and demand specialized knowledge to implement effectively.
+Existing search engine APIs fall short by returning potentially unrelated articles rather than providing direct
+answers to queries, and they aren't designed with AI agent requirements in mind.
 
-## Authentication
-The AISearchAPI uses API keys to authenticate requests. You can create and manage your API keys through your organization settings. [Get your free API key](https://app.aisearchapi.io/dashboard)
+To address these limitations, we're proud to launch AI Search API - the first search engine purpose-built for AI agents.
+AI Search API delivers an LLM-optimized search experience that prioritizes speed, efficiency, and reliable results.
+While conventional search APIs like Serp or Google cater to general use cases, AI Search API specifically targets
+AI developers and autonomous agents. We handle the entire information pipeline - from search and scraping to
+filtering and extraction - delivering the most relevant online data through a single, streamlined API call.
 
-```bash
-curl https://api.aisearch.io/v1/search \
-  -H "Authorization: Bearer YOUR_API_KEY"
-  -d {"prompt": "How much is Bitcoin worth today?"}
-```
+You can now test the API directly through our [API Playground](https://app.aisearchapi.io/playground),
 
-## Endpoints
-- **[POST /v1/search](/api-reference/endpoint/search)** - Execute a search query
-- **[GET /v1/balance](/api-reference/endpoint/balance)** - Get account balance
+## Getting started
+[Sign up](https://app.aisearchapi.io/join) for AI Search API to get your API key. You get 1,000 free API Credits. No credit card required.
+
+To begin using the AI Search API with code, obtain your API key and visit our
+[Authentication Guide](/api-reference/authentication) to explore the available endpoints.
+
+## Next
+[>>> Authentication](/api-reference/authentication)
