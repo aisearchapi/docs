@@ -1,0 +1,169 @@
+---
+title: CrewAI AI Search API
+icon: "/icons/crewai.svg"
+---
+
+This is a **CrewAI integration** for the **AI Search API**.  
+It connects your CrewAI agents with **context-aware search**, **multi-message prompts**, and **intelligent answers with citations**.
+
+👉 Get started now:
+- [Sign Up](https://app.aisearchapi.io/join)
+- [Log In](https://app.aisearchapi.io/login)
+- [Dashboard](https://app.aisearchapi.io/dashboard)
+
+---
+
+# Features
+
+- 🔍 **Prompt + Context Search** – Send a query with structured context  
+- 💬 **Multi-Message Context** – Handle several user messages in one query  
+- 📚 **Source Citations** – Responses include references when available  
+- ⚡ **CrewAI Integration** – Works with Agent, Task, Crew right away  
+- 🖥️ **Local LLM Support** – Use Ollama for reasoning + Search API for live info  
+- 🛡️ **Error Handling** – Clear exceptions for invalid models or roles  
+
+---
+
+# Installation
+
+```bash
+pip install crewai-aisearchapi
+```
+
+---
+
+# Quick Start (with Ollama + CrewAI)
+
+```python
+from crewai import Agent, Task, Crew, Process, LLM
+from crewai_aisearchapi import AISearchTool
+
+llm = LLM(
+    model="ollama/llama3.2:3b",
+    base_url="http://localhost:11434",
+    temperature=0.2,
+)
+
+tool = AISearchTool(api_key="your-api-key")
+
+agent = Agent(
+    role="Researcher",
+    goal="Answer questions with context and sources.",
+    backstory="Careful and concise.",
+    tools=[tool],
+    llm=llm,
+    verbose=True,
+)
+
+task = Task(
+    description="Answer: '{question}'. Keep it short.",
+    expected_output="2–4 sentences.",
+    agent=agent,
+    markdown=True,
+)
+
+crew = Crew(agents=[agent], tasks=[task], process=Process.sequential, verbose=True)
+
+if __name__ == "__main__":
+    print(crew.kickoff(inputs={"question": "What is RLHF in AI?"}))
+```
+
+---
+
+# Contextual Prompts
+
+Add multiple context messages for better answers:
+
+```python
+result = tool.run({
+    "prompt": "Explain how RLHF improves AI safety.",
+    "context": [
+        {"role": "user", "content": "Keep it simple, I'm new to ML."},
+        {"role": "user", "content": "Add one practical example."}
+    ],
+    "response_type": "markdown"
+})
+```
+
+---
+
+# Configuration Options
+
+```python
+from crewai_aisearchapi import AISearchTool, AISearchToolConfig
+
+config = AISearchToolConfig(
+    default_response_type="markdown",
+    include_sources=True,
+    timeout=30,
+    verbose=True
+)
+
+tool = AISearchTool(api_key="your-api-key", config=config)
+```
+
+---
+
+# Handling Responses
+
+The tool returns:
+
+- **Answer** (AI response)  
+- **Sources** (when available)  
+- **Response time**  
+
+Example:
+
+```text
+Reinforcement Learning with Human Feedback (RLHF) helps align AI models with human intent...
+
+**Sources:**
+- [1] https://example.com/rlhf-overview
+- [2] https://research.example.org/rlhf
+
+*Response time: 120ms*
+```
+
+---
+
+# Environment Variables
+
+```bash
+export AISEARCH_API_KEY="your-api-key"
+```
+
+In Python:
+
+```python
+import os
+from crewai_aisearchapi import AISearchTool
+
+tool = AISearchTool(api_key=os.getenv("AISEARCH_API_KEY"))
+```
+
+---
+
+# Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| **model not found** | Run `ollama pull llama3.2:3b` |
+| **context role error** | Ensure all context messages use `"role": "user"` |
+| **API key error** | Check `AISEARCH_API_KEY` is set correctly |
+
+---
+
+# Resources
+
+- [AI Search API Homepage](https://aisearchapi.io)  
+- [Docs](https://docs.aisearchapi.io)  
+- [Dashboard](https://app.aisearchapi.io/dashboard)  
+- [GitHub Issues](https://github.com/aisearchapi/aisearchapi-py/issues)  
+
+---
+
+# License
+
+[MIT License](https://github.com/aisearchapi/aisearchapi-crew-ai/blob/main/LICENSE)
+
+---
